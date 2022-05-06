@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Fete 2022</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+    <div id="app" class="container m-3 mx-auto">
+    <div class="row">
+        <div class="col-2">
+            <h5>Paste json here</h5>
+            <textarea name="" id="" v-model="orders"></textarea>
+            <button class="btn btn-primary" @click="cleanData"> Submit</button>
+        </div>
+        <div class="col-9 d-flex flex-wrap mx-1">
+            <div v-for="order in cleanedOrders" class="card p-2 m-2 w-40">
+               <p>{{order.customer_name}} - {{getDate(order.time)}}:00 </p>
+               <p>{{order.order_id}} - {{order.orderstatus_name}} - {{order.orderpayment_type}}</p>
+               <ol>
+               <li v-for="product in order.orderItems">
+                   {{product.name}} ({{product.options}}) x {{product.quantity}}
+               </li>
+               </ol>
+               <p>Total: ${{order.order_total}}</p>
+            </div>
+        </div>
+    </div>
+
+
+
+    </div>
+
+    <script src="./vue.js"></script>
+    <script src="./app.js" type="module"></script>
+</body>
+
+</html>
