@@ -15,25 +15,30 @@
 
 <body>
     <div id="app" class="container m-3 mx-auto">
-    <div class="row">
-        <div class="col-2">
-            <h5>Paste json here</h5>
-            <textarea name="" id="" v-model="orders"></textarea>
-            <button class="btn btn-primary" @click="cleanData"> Submit</button>
-        </div>
-        <div class="col-9 d-flex flex-wrap mx-1">
-            <div v-for="order in cleanedOrders" class="card p-2 m-2 w-40">
-               <p>{{order.customer_name}} - {{getDate(order.time)}}:00 </p>
-               <p>{{order.order_id}} - {{order.orderstatus_name}} - {{order.orderpayment_type}}</p>
-               <ol>
-               <li v-for="product in order.orderItems">
-                   {{product.name}} ({{product.options}}) x {{product.quantity}}
-               </li>
-               </ol>
-               <p>Total: ${{order.order_total}}</p>
+        <div class="row">
+            <div class="col-2">
+                <h5>Step1</h5>
+                <p>Use this website to convert csv file to json <a href="https://csvjson.com/csv2json">Convert to
+                        json</a></p>
+
+                <h5>Step 2</h5>
+                <p>Paste json output here and click submit</p>
+                <textarea name="" id="" v-model="orders"></textarea>
+                <button class="btn btn-primary" @click="cleanData"> Submit</button>
+            </div>
+            <div class="col-9 d-flex flex-wrap mx-1">
+                <div v-for="order in cleanedOrders" class="card p-2 m-2 w-40">
+                    <p>{{order.customer_name}} - {{getDate(order.time)}}:00 </p>
+                    <p>{{order.order_id}} - {{order.orderstatus_name}} - {{order.orderpayment_type}}</p>
+                    <ol>
+                        <li v-for="product in order.orderItems">
+                            {{product.name}} ({{product.options}}) x {{product.quantity}}
+                        </li>
+                    </ol>
+                    <p>Total: ${{order.order_total}}</p>
+                </div>
             </div>
         </div>
-    </div>
 
 
 
