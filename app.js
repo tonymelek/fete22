@@ -15,7 +15,21 @@ const app = {
 
     },
     computed: {
-        
+        sortedTotal(){
+            let totals={}
+            this.cleanedOrders.forEach(order=>order.orderItems.forEach(item=>{
+                if(totals[`${item.name}-${item.options}`]){
+                    totals[`${item.name}-${item.options}`]+=parseInt(item.quantity);
+                }else{
+                    totals[`${item.name}-${item.options}`]=parseInt(item.quantity);
+                }
+            }))
+                return Object.keys(totals)
+                .sort()
+                .reduce((acc, key) => ({
+                    ...acc, [key]: totals[key]
+                    }), {})
+                }
 
     },
     methods: {
@@ -33,7 +47,7 @@ const app = {
                         }else if(key.match(/product_id_[\d]+/)){
                             const product_num=key.split('_')[(key.split('_').length-1)];
                             if(!cleanedOrder.orderItems)cleanedOrder.orderItems=[]
-                            if(order[`product_name_${product_num}`]!=='') 
+                            if(order[`product_name_${product_num}`]!=='')
                             cleanedOrder.orderItems.push({
                                 name: order[`product_name_${product_num}`],
                                 options: this.cleanOption(order[`product_options_${product_num}`]),
@@ -47,9 +61,10 @@ const app = {
                     }
                     
                 }
-                    return cleanedOrder;
-                }).filter(order=>order.orderstatus_name!=='Cancelled')
-                .sort((a,b)=>a.time-b.time);
+                return cleanedOrder;
+                        }).filter(order=>order.orderstatus_name!=='Cancelled')
+                          .sort((a,b)=>a.time-b.time);
+
         },
         getDate(time){
             const date= new Date(time);

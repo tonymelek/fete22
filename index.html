@@ -16,7 +16,7 @@
 <body>
     <div id="app" class="container m-3 mx-auto">
         <div class="row">
-            <div class="col-2">
+            <div class="col-4">
                 <h5>Step1</h5>
                 <p>Use the website in the link to convert csv file to json <a
                         href="https://csvjson.com/csv2json" target="_blank">Convert to
@@ -25,9 +25,18 @@
                 <h5>Step 2</h5>
                 <p>Paste json output here and click submit</p>
                 <textarea name="" id="" v-model="orders"></textarea>
-                <button class="btn btn-primary" @click="cleanData"> Submit</button>
+                <button class="btn btn-primary d-block my-2" @click="cleanData"> Submit</button>
+                <div v-if="Object.keys(sortedTotal).length!==0" class="card">
+                    <h5 class="text-center  text-danger p-2">Total Quantities</h5>
+                    <ol>
+                        <li v-for="(value, name) in sortedTotal">
+                            {{name}} x{{value}}
+                        </li>
+                    </ol>
+                </div>
+          
             </div>
-            <div class="col-9 d-flex flex-wrap mx-1">
+            <div class="col-8 d-flex flex-wrap">
                 <div v-for="order in cleanedOrders" class="card p-2 m-2 w-40">
                     <p>{{order.customer_name}} - {{getDate(order.time)}} </p>
                     <p>{{order.invoice}} - {{order.orderstatus_name}} - {{order.orderpayment_type}}</p>
