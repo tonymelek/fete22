@@ -1,4 +1,4 @@
-const requiredKeys=[  "order_id",
+const requiredKeys=[  "invoice",
 "order_total",
 "orderpayment_type",
 "orderstatus_name",
@@ -36,7 +36,7 @@ const app = {
                             if(order[`product_name_${product_num}`]!=='') 
                             cleanedOrder.orderItems.push({
                                 name: order[`product_name_${product_num}`],
-                                options:order[`product_options_${product_num}`],
+                                options: this.cleanOption(order[`product_options_${product_num}`]),
                                 quantity:order[`product_quantity_${product_num}`],
                                 total:order[`product_total_with_tax_${product_num}`],
                             }); 
@@ -52,7 +52,15 @@ const app = {
                 .sort((a,b)=>a.time-b.time);
         },
         getDate(time){
-            return `${new Date(time).toDateString()} - ${new Date(time).getUTCHours()}`;
+            const date= new Date(time);
+            const shortTime=`${date.getUTCHours()}:00`;
+            const shortDate= `${date.getUTCDate()}/${date.getUTCMonth()+1}/${date.getUTCFullYear()}`
+            return `${shortDate} ${shortTime}`
+        },
+        cleanOption(option){
+            const optionArray=option.includes("|")?option.split("|"):[option];
+            const cleanedOptionArray=optionArray.map(option=>option.includes(":")?option.split(":")[1]:option);
+            return`${cleanedOptionArray[0]}${cleanedOptionArray[1]?` | ${cleanedOptionArray[1]}`:''}`
         }
     }
 
