@@ -18,14 +18,29 @@
         <div class="row">
             <div class="col-4">
                 <h5>Step1</h5>
-                <p>Use the website in the link to convert csv file to json <a
-                        href="https://csvjson.com/csv2json" target="_blank">Convert to
+                <p>Use the website in the link to convert csv file to json <a href="https://csvjson.com/csv2json"
+                        target="_blank">Convert to
                         json</a></p>
 
                 <h5>Step 2</h5>
                 <p>Paste json output here and click submit</p>
                 <textarea name="" id="" v-model="orders"></textarea>
                 <button class="btn btn-primary d-block my-2" @click="cleanData"> Submit</button>
+
+                <div class="d-flex align-items-center ">
+                    <label class="switch">
+                        <input type="checkbox" value="2022-05-21" class="mx-2" v-model="displayDates">
+                        <span class="slider round"></span>
+                    </label>
+                    <div class="mx-2">Saturday</div>
+                </div>
+                <div class="d-flex align-items-center ">
+                    <label class="switch">
+                        <input type="checkbox" value="2022-05-22" class="mx-2" v-model="displayDates">
+                        <span class="slider round"></span>
+                    </label>
+                    <div class="mx-2">Sunday</div>
+                </div>
                 <div v-if="Object.keys(sortedTotal).length!==0" class="card">
                     <h5 class="text-center  text-danger p-2">Total Quantities</h5>
                     <ol>
@@ -34,7 +49,7 @@
                         </li>
                     </ol>
                 </div>
-          
+
             </div>
             <div class="col-8 d-flex flex-wrap">
                 <div v-for="order in cleanedOrders" class="card p-2 m-2 w-40">
