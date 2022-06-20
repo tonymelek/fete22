@@ -6,13 +6,16 @@
           @updateOrder="orderUpdater" />
       </div>
       <div class="col-lg-6 col-12">
-        <p>Order Status: {{ detailedOrder.status }}</p>
+        <p class="sticky-top">Order Status: {{ detailedOrder.status }} - $ {{total}}</p>
         <div v-for="(item, index) in Object.keys(computedOrder)" :key="index">
-          {{ item }} - {{ computedOrder[item].selectedOption }} <span v-if="computedOrder[item].selectedSize"> - {{
-              computedOrder[item].selectedSize
-          }}</span> x {{
-    computedOrder[item].quantity
-}}-{{ computedOrder[item].price }}
+          {{ item}}
+        <div v-for="subItem in Object.keys(computedOrder[item])" :key="`${item}-${subItem}`">
+            <div v-if="subItem !=='subtotal'"> 
+              {{ subItem }} <span v-if="computedOrder[item][subItem].selectedSize"> - {{
+              computedOrder[item][subItem].selectedSize
+          }}</span> x {{ computedOrder[item][subItem].quantity }}- ${{ computedOrder[item][subItem].price }}
+            </div>
+        </div> 
         </div>
       </div>
     </div>
@@ -31,26 +34,40 @@ export default {
   },
   data: () => ({
     foodItems,
-    detailedOrder: { status: 'draft' }
+    detailedOrder: { status: 'draft' },
+    total:0
   }),
   computed: {
     computedOrder() {
       // eslint-disable-next-line
       const { status, ...items } = this.detailedOrder;
-      // const nonZeroItems = Object.keys(items).filter(item => {
-      //   if (items[item].price > 0) return items[item]
-      // });
-      // console.log(nonZeroItems)
-      for (let item in items) {
-        if (items[item].price === 0) delete items[item]
+       const sth={}
+      for(let item in items){
+        if (items[item].subtotal===0 ||['price','subtotal'].includes(item)) continue
+         for(let subItem in items[item]){
+          if(items[item][subItem].price===0)continue
+          sth[item]={...sth[item],[subItem]:items[item][subItem]}
+         } 
+        //console.log(item, Object.keys(items[item]),items[item])
       }
-      return items
+      // console.log(sth);
+      // // let x=Object.keys(items).map(item=>Object.keys(items[item])
+      // //   .filter(v=>!['price','subtotal'].includes(v))
+      // //    );
+      // //console.log(x);
+      // for (let item in items) {
+      //   //console.log(item,Object.keys(items[item]));
+      //   if (items[item].price === 0) delete items[item]
+      // }
+      return sth
     }
   },
   methods: {
-    orderUpdater(order) {
+    orderUpdater(order) {     
       this.detailedOrder = { ...this.detailedOrder, ...order }
-      console.log(this.detailedOrder)
+      this.total=Object.keys(this.detailedOrder)
+      .filter(v=>v!=='status')
+      .reduce((a,b)=>a+this.detailedOrder[b].subtotal,0)
     }
   }
 }
