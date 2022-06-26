@@ -61,11 +61,11 @@ export default {
         for (let item in val) {
           const { quantity, selectedSize } = val[item];
           if (quantity < 0 || quantity > 10) this.newOrder[item].quantity = 0;
-          if (this.newOrder[item].quantity !== 0) {
+         // if (this.newOrder[item].quantity !== 0) {
             this.newOrder[item].price = (this.isSizabelItem(this.type) ?
               quantity * foodOptions[this.type].price[selectedSize]
               : quantity * foodOptions[this.type].price) || 0
-          }
+          // }
           subtotal += this.newOrder[item].price;
         }
         this.subtotal = subtotal;
