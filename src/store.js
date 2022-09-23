@@ -3,7 +3,8 @@ import { createStore } from 'vuex'
 export default createStore({
     state: () => ({
         selectedForm: 'Sign in',
-        loggedInUser: null
+        loggedInUser: null,
+        modalData: { display: 'd-none', modalType: 'success', modalText: '' }
     }),
     mutations: {
         setLoggedInUser: (state, payload) => {
@@ -11,6 +12,9 @@ export default createStore({
         },
         setSelectedForm: (state, payload) => {
             state.selectedForm = payload;
+        },
+        setModalData: (state, payload) => {
+            state.modalData = payload;
         }
     },
     getters: {

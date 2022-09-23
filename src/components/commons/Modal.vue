@@ -1,56 +1,43 @@
 <template>
-    <div class="modal-container" :class="display" >
-        <div :class="modalBg[modalType]" class="card m-3 p-2 max-width-500 ">
-        <div class="d-flex justify-content-end">
-            <button class="btn btn-light w-3-rem" @click="hideModal">x</button>
-        </div>
+    <div class="modal-container" :class="modalData.display " >
+        <div class="card m-3 p-2 max-width-500 modal-bg">
+         <div class="d-flex justify-content-end">
+            <button class="btn btn-danger w-3-rem" @click="hideModal"> <strong>X</strong> </button>
+         </div>
            
-            <h2 class="text-center">{{modalTitle[modalType]}}</h2>
-            <p class="p-2">{{modalText}}</p>
+        <NotificationModalContent v-if="purpose==='notification'"/>  
+        <DetailsModalContent :userDetails="userDetails"  v-if="purpose==='userDetails'" />
+
         </div>
     </div>
 </template>
 
 <script>
+import NotificationModalContent from './NotificationModalContent.vue';
+import DetailsModalContent from './DetailsModalContent.vue';
     export default {
-        name:"modal-container",
-        props:{
-            display:{
-                type:String,
-                default:'d-none',
-                required: false
-            },
-            modalType:{
-                type:String,
-                default:'success',
-                required: false
-            },
-             modalText:{
-                type:String,
-                default:'no text passed',
-                required: false
-            }
-
+    name: "modal-container",
+    props:{
+        purpose:{
+            type:String,
+            required:true
         },
-        data:()=>({
-            modalBg:{
-                'success':'bg-success-light',
-                'error':'bg-danger-light'
-            },
-            modalTitle:{
-                'success':'Congratulations !',
-                'error': 'Error !'
-            },
-            displayModal:'d-none'
-        }),
-        methods:{
-            hideModal(e){
-                e.preventDefault();
-                this.$emit('hideModal','d-none')
-            }
+        userDetails:{
+            type:Object,
+            required:false
         }
-       
-    }
+    },
+    computed: {
+        modalData() { return this.$store.state.modalData; }
+    },
+    methods: {
+        hideModal(e) {
+            e.preventDefault();
+            this.$store.commit("setModalData", { ...this.modalData, display: "d-none" });
+        }
+    },
+    components: { NotificationModalContent, DetailsModalContent }
+}
 </script>
 
 <style scoped>
@@ -73,6 +60,9 @@ body,html{
 }
 .w-3-rem{
     width:3rem;
-    background-color: transparent;
+}
+
+.modal-bg{
+    background: beige;
 }
 </style>
